@@ -41,7 +41,11 @@ class ViewController: UIViewController {
                             numPointsInGraph: AudioConstants.AUDIO_BUFFER_SIZE/2)
             
             graph.addGraph(withName: "time",
-                numPointsInGraph: AudioConstants.AUDIO_BUFFER_SIZE)
+                           numPointsInGraph: AudioConstants.AUDIO_BUFFER_SIZE)
+            
+            // Creating a third graph for viewing 20 points long
+            graph.addGraph(withName: "bufferSize20Graph",
+                           numPointsInGraph: Int(AudioConstants.AUDIO_BUFFER_SIZE/20))
             
             graph.makeGrids() // add grids to graph
         }
@@ -58,6 +62,20 @@ class ViewController: UIViewController {
        
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause audio manager when navigating away
+        audio.pause()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Play audio manager when navigating back
+        audio.play()
+    }
+    
     // periodically, update the graph with refreshed FFT Data
     func updateGraph(){
         
@@ -70,6 +88,11 @@ class ViewController: UIViewController {
             graph.updateGraph(
                 data: self.audio.timeData,
                 forKey: "time"
+            )
+            
+            graph.updateGraph(
+                data: <#T##[Float]#>,
+                forKey: "bufferSize20Graph"
             )
         }
         

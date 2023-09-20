@@ -17,6 +17,7 @@ class AudioModel {
     // the user can access these arrays at any time and plot them if they like
     var timeData:[Float]
     var fftData:[Float]
+    var maxDataSize20:[Float]
     
     // MARK: Public Methods
     init(buffer_size:Int) {
@@ -24,6 +25,7 @@ class AudioModel {
         // anything not lazily instatntiated should be allocated here
         timeData = Array.init(repeating: 0.0, count: BUFFER_SIZE)
         fftData = Array.init(repeating: 0.0, count: BUFFER_SIZE/2)
+        maxDataSize20 = Array.init(repeating: 0.0, count: 20)
     }
     
     // public function for starting processing of microphone data
@@ -41,12 +43,71 @@ class AudioModel {
         }
     }
     
-    
     // You must call this when you want the audio to start being handled by our model
     func play(){
         if let manager = self.audioManager{
             manager.play()
         }
+    }
+    
+    func pause(){
+        if let manager = self.audioManager{
+            manager.pause()
+        }
+    }
+    
+    
+  
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    
+    // WORK HERE
+    // WORK HERE
+    // WORK HERE
+    func getMaxFrequencyAmplitude() -> (Float, Float) {
+        if inputBuffer != nil {
+            // Loop through evert value of the FFT Data array
+            var batchFor20Buffer: [Float]
+            var maxDataSizeIndex: Int = 0
+            
+            for itr in 0..<fftData.count {
+                // Max Data Size Index
+                if itr % 20 == 0 {
+                    batchFor20Buffer = Array.init(
+                        repeating: 0.0,
+                        count: Int(fftData.count / 20)
+                    )
+                }
+                
+                var value: Int = itr % 20
+                
+                batchFor20Buffer[itr] =
+                
+                
+                // Initially set as negative infinity to ensure the sa
+//                self.maxDataSize20[i] = -Float.infinity
+//                for j in 0..<Int(fftData.count/20) {
+//                    if fftData[i] > self.maxDataSize20[i] {
+//                        self.maxDataSize20[i]
+//                    }
+//                }
+            }
+        }
+        
     }
     
     
@@ -59,7 +120,6 @@ class AudioModel {
     private lazy var fftHelper:FFTHelper? = {
         return FFTHelper.init(fftSize: Int32(BUFFER_SIZE))
     }()
-    
     
     private lazy var inputBuffer:CircularBuffer? = {
         return CircularBuffer.init(numChannels: Int64(self.audioManager!.numInputChannels),
@@ -87,7 +147,7 @@ class AudioModel {
             //   timeData: the raw audio samples
             //   fftData:  the FFT of those same samples
             // the user can now use these variables however they like
-            
+        
         }
     }
     
@@ -99,6 +159,4 @@ class AudioModel {
         // copy samples from the microphone into circular buffer
         self.inputBuffer?.addNewFloatData(data, withNumSamples: Int64(numFrames))
     }
-    
-    
 }
