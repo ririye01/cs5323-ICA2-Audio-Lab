@@ -217,7 +217,7 @@ class MetalGraph {
     
     func addGraph(withName:String,
         shouldNormalizeForFFT:Bool,
-        numPointsInGraph:Int){
+        numPointsInGraph:Int) {
         // custom FFT normalization option
         if shouldNormalizeForFFT{
             // use built in normalization for the fft

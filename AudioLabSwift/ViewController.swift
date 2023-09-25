@@ -45,7 +45,7 @@ class ViewController: UIViewController {
             
             // Creating a third graph for viewing 20 points long
             graph.addGraph(withName: "bufferSize20Graph",
-                           numPointsInGraph: Int(AudioConstants.AUDIO_BUFFER_SIZE/20))
+                           numPointsInGraph: 20)
             
             graph.makeGrids() // add grids to graph
         }
@@ -91,7 +91,8 @@ class ViewController: UIViewController {
             )
             
             graph.updateGraph(
-                data: <#T##[Float]#>,
+                data: self.audio.maxDataSize20,
+                shouldNormalizeForFFT: 0,
                 forKey: "bufferSize20Graph"
             )
         }

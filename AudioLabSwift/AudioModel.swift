@@ -17,7 +17,7 @@ class AudioModel {
     // the user can access these arrays at any time and plot them if they like
     var timeData:[Float]
     var fftData:[Float]
-    var maxDataSize20:[Float]
+    var maxDataSize20:[Float]  // size 20 array for max frequency per buffer
     
     // MARK: Public Methods
     init(buffer_size:Int) {
@@ -56,60 +56,23 @@ class AudioModel {
         }
     }
     
-    
-  
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    
-    // WORK HERE
-    // WORK HERE
-    // WORK HERE
-    func getMaxFrequencyAmplitude() -> (Float, Float) {
-        if inputBuffer != nil {
-            // Loop through evert value of the FFT Data array
-            var batchFor20Buffer: [Float]
-            var maxDataSizeIndex: Int = 0
-            
-            for itr in 0..<fftData.count {
-                // Max Data Size Index
-                if itr % 20 == 0 {
-                    batchFor20Buffer = Array.init(
-                        repeating: 0.0,
-                        count: Int(fftData.count / 20)
-                    )
-                }
-                
-                var value: Int = itr % 20
-                
-                batchFor20Buffer[itr] =
-                
-                
-                // Initially set as negative infinity to ensure the sa
-//                self.maxDataSize20[i] = -Float.infinity
-//                for j in 0..<Int(fftData.count/20) {
-//                    if fftData[i] > self.maxDataSize20[i] {
-//                        self.maxDataSize20[i]
-//                    }
-//                }
+    func updateMaxFrequencyAmplitude() {
+        // Window size for each slice of the FFT array
+        let windowSize = fftData.count / 20
+        
+        // Each `i` represents an index of the maxDataSize20 array
+        for i in 0..<20 {
+            let startIdx = i * windowSize  // Starting index
+            let endIdx = min(startIdx + windowSize, fftData.count)  // Ending index
+            let window = fftData[startIdx..<endIdx]  // Indexing to catch subset
+            if let maxValue = window.max() {
+                maxDataSize20[i] = maxValue
+            } else {
+                // Handle error or edge case when window is empty
+                print("Error: Window is empty or some unexpected error occurred.")
             }
         }
-        
     }
-    
     
     //==========================================
     // MARK: Private Properties
@@ -147,6 +110,8 @@ class AudioModel {
             //   timeData: the raw audio samples
             //   fftData:  the FFT of those same samples
             // the user can now use these variables however they like
+            
+            updateMaxFrequencyAmplitude()
         
         }
     }
